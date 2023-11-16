@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../../api/auth';
@@ -8,15 +9,23 @@ export const LoginPage = () => {
         handleSubmit,
         formState: { errors },
     } = useForm();
+
     const navigate = useNavigate();
 
+    const [error, setError] = useState();
+
     const onSubmit = async (data) => {
-        await login(data);
-        navigate('/home');
+        try {
+            await login(data);
+            navigate('/home');
+        } catch (error) {
+            setError(error.message || 'Something went wrong!');
+        }
     };
 
     return (
         <div>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor='email_register'>Email</label>
                 <input
@@ -36,7 +45,7 @@ export const LoginPage = () => {
                 {errors.password && (
                     <p> {errors.password.message}</p>
                 )}
-                <button type='submit'>Register</button>
+                <button type='submit'>Login</button>
             </form>
         </div>
     );

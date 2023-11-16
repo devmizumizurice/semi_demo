@@ -22,6 +22,8 @@ axios.interceptors.response.use(
   }
 );
 
+axios.defaults.withCredentials = true;
+
 function App() {
   return (
     <>

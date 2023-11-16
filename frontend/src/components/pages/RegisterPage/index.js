@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { register as registerAPI } from "../../../api/auth";
@@ -9,13 +10,20 @@ export const RegisterPage = () => {
     } = useForm();
 
     const navigate = useNavigate();
-    const onSubmit = async (data) => {
-        await registerAPI(data);
-        navigate('/home');
-    };
 
+    const [error, setError] = useState();
+
+    const onSubmit = async (data) => {
+        try {
+            await registerAPI(data);
+            navigate('/home');
+        } catch (error) {
+            setError(error.message || 'Something went wrong!');
+        }
+    };
     return (
         <div>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor='username_register'>Username</label>
                 <input
@@ -56,7 +64,7 @@ export const RegisterPage = () => {
                 )}
 
                 <label htmlFor='bio_register'>Bio</label>
-                <textarea 
+                <textarea
                     id='bio_register'
                     type='text'
                     {...register('bio')}
