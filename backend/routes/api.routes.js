@@ -16,6 +16,7 @@ router.post('/register', registerValidator, controllerUser.userRegister);
 router.post('/login', loginValidator, controllerUser.userLogin);
 
 router.get('/refresh', JWTController.grantNewAccessToken);
+router.get('/logout', JWTController.userLogout);
 
 router.get('/user/:username', controllerUser.getProfileByUsername);
 router.get('/search/user', searchValidator, controllerUser.getMatchedUsersProfile);

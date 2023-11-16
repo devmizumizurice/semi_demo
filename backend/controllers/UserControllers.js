@@ -16,7 +16,7 @@ const userRegister = async (req, res) => {
         name: req.body.name,
         avatar: req.body.avatar,
         bio: req.body.bio,
-        birthday: req.body.birthday
+        birthdate: req.body.birthdate
     };
     try {
         const existingUsername = await Users.findOne({

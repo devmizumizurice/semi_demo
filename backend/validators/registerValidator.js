@@ -7,7 +7,7 @@ const registerValidator = [
     body('name').isString().notEmpty(),
     body('avatar').isURL().optional(),
     body('bio').isString().optional(),
-    body('birthday').isDate().optional(),
+    body('birthdate').isDate().optional(),
 
     (req, res, next) => {
         const errors = validationResult(req);

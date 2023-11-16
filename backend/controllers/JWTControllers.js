@@ -50,15 +50,26 @@ const grantNewAccessToken = (req, res) => {
     }
     const decoded = verifyToken(cookies);
     if (!decoded) {
-        return res.status(403).send({ error: 'Invalid token' });
+        return res.status(401).send({ error: 'Invalid token' });
     }
     const newToken = createToken({ id: decoded.id }, false);
     return res.status(200).send({ access_token: newToken.access_token });
+}
+
+const userLogout = (req, res) => {
+    const cookies = req.cookies['refresh_token'];
+    if (!cookies) {
+        return res.status(405).json({ error: 'Cookie not provided' });
+    }
+    res.clearCookie('refresh_token');
+
+    return res.sendStatus(204);
 }
 
 module.exports = {
     createToken,
     verifyToken,
     verifyAccessToken,
-    grantNewAccessToken
+    grantNewAccessToken,
+    userLogout
 }
