@@ -13,4 +13,4 @@
   res.clearCookie("refresh_token");
   ```
   これは，Cookie を CORS 対策の為に，httpOnly 属性を true にしている為に設けたものです。  
-  (ログアウトができないため)
+  （ログアウトできないため）
