@@ -25,7 +25,7 @@ const getPostByUsername = async (req, res) => {
             offset: (page - 1) * perPage,
             order: [['createdAt', 'DESC']],
         });
-        return res.status(200).send({ data: commonPostResponseParserMap(posts) });
+        return res.status(200).send(commonPostResponseParserMap(posts));
     } catch (error) {
         return res.status(500).send({
             error: error.message || 'Error while getting posts',
@@ -49,7 +49,7 @@ const getAllPost = async (req, res) => {
             offset: (page - 1) * perPage,
             order: [['createdAt', 'DESC']],
         });
-        return res.status(200).send({ data: commonPostResponseParserMap(posts) });
+        return res.status(200).send(commonPostResponseParserMap(posts));
     } catch (error) {
         return res.status(500).send({
             error: error.message || 'Error while getting posts',
@@ -94,7 +94,7 @@ const getSearchPost = async (req, res) => {
             offset: (page - 1) * perPage,
             order: [['createdAt', 'DESC']],
         });
-        return res.status(200).send({ data: commonPostResponseParserMap(posts) });
+        return res.status(200).send(commonPostResponseParserMap(posts));
     } catch (error) {
         return res.status(500).send({
             error: error.message || 'Error while getting posts',
@@ -105,13 +105,13 @@ const getSearchPost = async (req, res) => {
 
 const createPost = async (req, res) => {
     const user_id = req.user_id;
+    console.log(user_id);
     const createPostBody = {
         user_id: user_id,
         content: req.body.content,
     };
     try {
         const createdPost = await Posts.create(createPostBody);
-        console.log(createdPost.post_id);
         //TODO: Response ID or create que for storage
         return res.sendStatus(204);
     } catch (error) {

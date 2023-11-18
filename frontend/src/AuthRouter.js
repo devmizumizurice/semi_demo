@@ -1,5 +1,5 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
+import { Navigate } from 'react-router-dom';
+import { useAuth } from './hooks/common/useAuth';
 
 export const PrivateRoute = ({ children }) => {
   const check = useAuth();
@@ -9,7 +9,7 @@ export const PrivateRoute = ({ children }) => {
   if (check.isAuthenticated) {
     return children;
   }
-  return <Navigate to="/" />;
+  return <Navigate to='/' />;
 };
 
 export const GuestRoute = ({ children }) => {
@@ -18,7 +18,7 @@ export const GuestRoute = ({ children }) => {
     return <div>Loading...</div>;
   }
   if (check.isAuthenticated) {
-    return <Navigate to="/home" />;
+    return <Navigate to='/home' />;
   }
   return children;
 };

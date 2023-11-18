@@ -5,10 +5,10 @@ const registerValidator = [
     body('email').isEmail().notEmpty(),
     body('password').isString().isLength({ min: 3 }).notEmpty(),
     body('name').isString().notEmpty(),
-    body('avatar').isURL().optional(),
-    body('bio').isString().optional(),
-    body('birthdate').isDate().optional(),
-
+    body('avatar').isURL().optional({ nullable: true }),
+    body('bio').isString().optional({ nullable: true }),
+    body('birthday').isDate().optional({ nullable: true }),
+    
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

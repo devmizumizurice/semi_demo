@@ -61,9 +61,6 @@ module.exports = (sequelize, DataTypes) => {
     bio: DataTypes.TEXT,
     birthdate: {
       type: DataTypes.DATEONLY,
-      get: () => {
-        return moment(this.getDataValue('birthdate')).format('YYYY-MM-DD');
-      },
     }
   }, {
     sequelize,

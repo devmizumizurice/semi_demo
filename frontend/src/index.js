@@ -2,18 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import ErrorBoundary from './components/ErrorBoundary';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import ErrorBoundary from './views/components/ErrorBoundary';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ErrorBoundary>
-    <React.StrictMode>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </React.StrictMode>
   </ErrorBoundary>
 );
 // If you want to start measuring performance in your app, pass a function

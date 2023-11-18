@@ -42,7 +42,8 @@ const userRegister = async (req, res) => {
             httpOnly: true
         });
         res.status(200).send({
-            access_token: token.access_token
+            access_token: token.access_token,
+            uid: createdUser.id,
         });
     } catch (error) {
         return res.status(500).send({
@@ -73,7 +74,8 @@ const userLogin = async (req, res) => {
                     httpOnly: true
                 });
                 res.status(200).send({
-                    access_token: token.access_token
+                    access_token: token.access_token,
+                    uid: user.id,
                 });
             } else {
                 return res.status(401).send({
@@ -91,6 +93,7 @@ const userLogin = async (req, res) => {
 const getMyProfile = async (req, res) => {
     const user_id = req.user_id;
     try {
+        
         const user = await Users.findOne({
             where: { id: user_id },
             attributes: {
@@ -131,21 +134,35 @@ const getProfileByUsername = async (req, res) => {
 }
 
 const getMatchedUsersProfile = async (req, res) => {
-    let name = req.query.q;
+    let query = req.query.q;
     let page = req.query.page || 1;
     let perPage = req.query.limit || 10;
+    const keywords = query.split(' ');
+
     try {
         const users = await Users.findAll({
             where: {
-                name: {
-                    [Op.iLike]: `%${name}%`
-                }
+                [Op.and]: keywords.map(keyword => ({
+                    [Op.or]: [
+                        {
+                            username: {
+                                [Op.iLike]: `%${keyword}%`,
+                            },
+                        },
+                        {
+                         name: {
+                                [Op.iLike]: `%${keyword}%`,
+                            },
+                        },
+                 
+                    ],
+                })),
             },
             attributes: ['id', 'username', 'name', 'avatar', 'bio', 'createdAt'],
             limit: perPage,
             offset: (page - 1) * perPage,
         });
-        return res.status(200).send({ data: commonProfileResponseParserMap(users) });
+        return res.status(200).send(commonProfileResponseParserMap(users));
     } catch (error) {
         return res.status(500).send({
             error: error.message || 'Error while searching user',
@@ -162,7 +179,7 @@ const editMyProfile = async (req, res) => {
             name: req.body.name,
             avatar: req.body.avatar,
             bio: req.body.bio,
-            birthday: req.body.birthday
+            birthdate: req.body.birthdate
         };
         for (let k in updateUserReqBody) {
             if (updateUserReqBody[k] == null) {

@@ -1,34 +1,48 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { register as registerAPI } from '../../../apis/auth';
-
-export const RegisterPage = () => {
-    const { register,
+import { getMyUser, updateUserData } from '../../../apis/user';
+export const UserEditPage = () => {
+    const {
+        register,
         handleSubmit,
         formState: { errors },
+        setValue
     } = useForm();
+
+    const [errorWhileFetch, setFetchError] = useState();
+
+    useEffect(() => {
+        document.title = 'Edit Profile / Demo social';
+        const fetchData = async () => {
+            try {
+                const res = await getMyUser();
+                setValue('username', res.data.username);
+                setValue('email', res.data.email);
+                setValue('name', res.data.name);
+                setValue('bio', res.data.bio);
+                setValue('birthdate', res.data.birthdate);
+            } catch (error) {
+                setFetchError(error.message || 'Something went wrong!');
+            }
+        };
+        fetchData();
+    }, [setValue]);
 
     const navigate = useNavigate();
 
-    const [error, setError] = useState();
-
     const onSubmit = async (data) => {
         try {
-            await registerAPI(data);
-            navigate('/home');
+            await updateUserData(data);
+            navigate('/home/all');
         } catch (error) {
-            setError(error.message || 'Something went wrong!');
+            setFetchError(error.message || 'Something went wrong!');
         }
     };
 
-    useEffect(() => {
-        document.title = 'Register / Demo social';
-    }, []);
-
     return (
         <div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {errorWhileFetch && <p style={{ color: 'red' }}>{errorWhileFetch}</p>}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor='username_register'>Username</label>
                 <input
@@ -39,7 +53,6 @@ export const RegisterPage = () => {
                 {errors.username && (
                     <p> {errors.username.message}</p>
                 )}
-                <br />
                 <label htmlFor='email_register'>Email</label>
                 <input
                     id='email_register'
@@ -49,18 +62,6 @@ export const RegisterPage = () => {
                 {errors.email && (
                     <p> {errors.email.message}</p>
                 )}
-                <br />
-                <label htmlFor='password_register'>Password</label>
-                <input
-                    id='password_register'
-                    type='password'
-                    {...register('password', { required: 'Please enter a valid password' })}
-                />
-                {errors.password && (
-                    <p> {errors.password.message}</p>
-                )}
-                <br />
-
                 <label htmlFor='name_register'>Name</label>
                 <input
                     id='name_register'
@@ -70,23 +71,18 @@ export const RegisterPage = () => {
                 {errors.name && (
                     <p> {errors.name.message}</p>
                 )}
-                <br />
-
                 <label htmlFor='bio_register'>Bio</label>
                 <textarea
                     id='bio_register'
-                    {...register('bio')}
-                />
-                <br />
+                    {...register('bio')} />
                 <label htmlFor='birthday_register'>Birthday</label>
                 <input
                     id='birthday_register'
                     type='date'
                     {...register('birthdate')}
                 />
-                <br />
-                <button type='submit'>Register</button>
+                <button type='submit'>Save</button>
             </form>
         </div>
     );
-};
+}

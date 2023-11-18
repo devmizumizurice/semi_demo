@@ -28,7 +28,7 @@ const verifyToken = (token) => {
 }
 
 const verifyAccessToken = (req, res, next) => {
-    const token = req.headers['authorization']
+    const token = req.headers['authorization'];
 
     if (!token) {
         return res.status(405).json({ error: 'Token not provided' });
@@ -52,7 +52,7 @@ const grantNewAccessToken = (req, res) => {
     if (!decoded) {
         return res.status(401).send({ error: 'Invalid token' });
     }
-    const newToken = createToken({ id: decoded.id }, false);
+    const newToken = createToken(decoded.id, false);
     return res.status(200).send({ access_token: newToken.access_token });
 }
 

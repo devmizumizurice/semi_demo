@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-const useAuth = () => {
+export const useAuth = () => {
   const [check, setCheck] = useState({
     checked: false,
     isAuthenticated: false,
@@ -9,7 +9,7 @@ const useAuth = () => {
     const handleCheckJwt = async () => {
       try {
         let isAuthenticated = false;
-        if (localStorage.getItem("access_token") !== null) {
+        if (localStorage.getItem('access_token') !== null) {
           isAuthenticated = true;
         }
         setCheck({
@@ -25,5 +25,3 @@ const useAuth = () => {
 
   return check;
 };
-
-export { useAuth };

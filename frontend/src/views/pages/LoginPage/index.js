@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../../api/auth';
+import { login } from '../../../apis/auth';
 
 export const LoginPage = () => {
     const {
@@ -23,6 +23,10 @@ export const LoginPage = () => {
         }
     };
 
+    useEffect(() => {
+        document.title = 'Login / Demo social';
+    }, []);
+
     return (
         <div>
             {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -36,6 +40,7 @@ export const LoginPage = () => {
                 {errors.email && (
                     <p> {errors.email.message}</p>
                 )}
+                <br />
                 <label htmlFor='password_register'>Password</label>
                 <input
                     id='password_register'
@@ -45,6 +50,7 @@ export const LoginPage = () => {
                 {errors.password && (
                     <p> {errors.password.message}</p>
                 )}
+                <br />
                 <button type='submit'>Login</button>
             </form>
         </div>

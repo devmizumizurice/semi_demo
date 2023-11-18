@@ -6,7 +6,7 @@ const myProfileResponseParser = (user) => {
         name: user.name,
         avatar: user.avatar || null,
         bio: user.bio || null,
-        birthday: user.birthday || null,
+        birthdate: user.birthdate || null,
         createdAt: user.createdAt,
     }
 }
