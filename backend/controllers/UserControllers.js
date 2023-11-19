@@ -16,8 +16,9 @@ const userRegister = async (req, res) => {
         name: req.body.name,
         avatar: req.body.avatar,
         bio: req.body.bio,
-        birthdate: req.body.birthdate
+        birthdate: new Date(req.body.birthdate),
     };
+
     try {
         const existingUsername = await Users.findOne({
             where: { username: registerUserReqBody.username }
@@ -93,7 +94,7 @@ const userLogin = async (req, res) => {
 const getMyProfile = async (req, res) => {
     const user_id = req.user_id;
     try {
-        
+
         const user = await Users.findOne({
             where: { id: user_id },
             attributes: {
@@ -150,11 +151,11 @@ const getMatchedUsersProfile = async (req, res) => {
                             },
                         },
                         {
-                         name: {
+                            name: {
                                 [Op.iLike]: `%${keyword}%`,
                             },
                         },
-                 
+
                     ],
                 })),
             },

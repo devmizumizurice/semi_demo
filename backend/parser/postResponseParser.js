@@ -8,7 +8,7 @@ const commonPostResponseParser = (post) => {
             name: post.User.name,
             avatar: post.User.avatar || null,
         },
-
+        createdAt: post.createdAt,
     }
 }
 
